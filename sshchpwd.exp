@@ -37,38 +37,38 @@ spawn ssh -p $port $server
 
 # Mission of this first expect - get to the shell command prompt. If the
 # password is expired and we have to change it before getting to the prompt,
-# then exit 0 (success).  
+# then exit 0 (success).
 
 expect {
-  "(yes/no)? " { 
+  "(yes/no)? " {
     send_user " (detected unknown host key - accepting)\n"
     send "yes\n"
     send_user " (continuing expect loop)\n"
     exp_continue
   }
-  "assword:" { 
+  "assword:" {
     send_user " (detected password login prompt - possibly token)\n"
-    send "$tokpwd\n" 
+    send "$tokpwd\n"
     expect {
       " UNIX password:" {
         send_user " (detected additional password prompt - old password)\n"
-        send "$oldpwd\n" 
+        send "$oldpwd\n"
         send_user " (continuing expect loop)\n"
         exp_continue
       }
       -nocase "old password:" {
         send_user " (detected password expired prompt)\n"
-        send "$oldpwd\n" 
+        send "$oldpwd\n"
         send_user " (continuing expect loop)\n"
         exp_continue
       }
       -re "not match the|password mismatch" {
         send_user " (assuming expired password change failed)\n"
-        send "passwd\n" 
+        send "passwd\n"
         expect {
           -nocase "old password:" {
             send_user " (trying with new password)\n"
-            send "$newpwd\n" 
+            send "$newpwd\n"
             expect {
               -re "\[nN\]ew \[pP\]assword:|\[nN\]ew \[pP\]assword \[aA\]gain:" {
                 send_user "\nPassword is current.\n"
@@ -91,21 +91,21 @@ expect {
         }
       }
       -re "\[nN\]ew \[pP\]assword:|\[nN\]ew \[pP\]assword \[aA\]gain:" {
-        send "$newpwd\n" 
+        send "$newpwd\n"
         expect {
           "between changes." {
             send_user "\nPassword change failed.\n"
             exit 1
           }
           -re "\[nN\]ew \[pP\]assword:|\[nN\]ew \[pP\]assword \[aA\]gain:" {
-            send "$newpwd\n" 
+            send "$newpwd\n"
             expect {
-              -re "$prompt" { 
+              -re "$prompt" {
                 send_user " (detected shell command prompt)\n"
                 send_user "Password successfully changed.\n"
                 exit 0
               }
-              "Connection to " { 
+              "Connection to " {
                 send_user " (detected connection closed - assuming password change successful)\n"
                 send_user "Password successfully changed.\n"
                 exit 0
@@ -119,7 +119,7 @@ expect {
         }
       }
       "assword:" {
-        send "$newpwd\n" 
+        send "$newpwd\n"
         expect {
           " UNIX password:" {
             send_user "\nNew password is expired!\n"
@@ -133,7 +133,7 @@ expect {
             send_user "\nAutomated login failed.\n"
             exit 1
           }
-          -re "$prompt" { 
+          -re "$prompt" {
             send_user " (detected shell command prompt)\n"
             send_user "Password is current.\n"
             exit 0
@@ -155,21 +155,21 @@ send "\n"
 expect {
   -re "$prompt" {
     send_user " (changing password at prompt)\n"
-    send "passwd\n" 
+    send "passwd\n"
     expect {
       -re "\[oO\]ld \[pP\]assword:| UNIX \[pP\]assword:" {
-        send "$oldpwd\n" 
+        send "$oldpwd\n"
         expect {
           "You must wait longer" {
             send_user "\nPassword change failed.\n"
             exit 1
           }
           -re "not match the|password mismatch" {
-            send "passwd\n" 
+            send "passwd\n"
             expect {
               -nocase "old password:" {
                 send_user " (trying with new password)\n"
-                send "$newpwd\n" 
+                send "$newpwd\n"
                 expect {
                   -re "\[nN\]ew \[pP\]assword:|\[nN\]ew \[pP\]assword \[aA\]gain:" {
                     send_user "\nPassword is current.\n"
@@ -192,16 +192,16 @@ expect {
             }
           }
           -re "\[nN\]ew \[pP\]assword:|\[nN\]ew \[pP\]assword \[aA\]gain:" {
-            send "$newpwd\n" 
+            send "$newpwd\n"
             expect {
               "between changes." {
                 send_user "\nPassword change failed.\n"
                 exit 1
               }
               -re "\[nN\]ew \[pP\]assword:|\[nN\]ew \[pP\]assword \[aA\]gain:" {
-                send "$newpwd\n" 
+                send "$newpwd\n"
                 expect {
-                  -re "$prompt" { 
+                  -re "$prompt" {
                     send_user " (detected return to shell command prompt)\n"
                     send_user "Password successfully changed.\n"
                     exit 0

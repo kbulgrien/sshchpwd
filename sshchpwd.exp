@@ -19,6 +19,8 @@
 #   $ export NEW_PASSWORD="newpwd"
 #   $ ./sshchpwd {server} {port} {token} {passwd_command}
 #
+# The {server} parameter may incorporate a login username (i.e. user@server).
+#
 # The {port} and {token} command-line parameters are optional. If the server
 # uses SecurID (or another one-time password), enter it on the command-line
 # as the third parameter.
@@ -30,10 +32,9 @@
 # command-line arguments, or, for example, to prefix the command with sudo.
 # In the case of sudo, however, as this script is not sudo-aware, sudo must
 # permit the login user to run passwd without first retyping their password.
-# See the sudo "nopasswd" configuration option.  When using this parameter,
-# note that {server} may incorporate a login username (i.e. user@server).
-# If any prior optional parameter is not needed, use empty quotes ("") as a
-# placeholder for each optional parameter that is not used.
+# (See the sudo "nopasswd" configuration option.)  If any prior optional
+# parameter is not needed, use empty quotes ("") as a placeholder for
+# unused optional parameters.
 #
 # Example:
 #
@@ -41,7 +42,7 @@
 #   $ ./sshchpwd login@hostname "" "" "sudo passwd username"
 #
 # In the case of changing another user's password, OLD_PASSWORD is likely not
-# required, and is often perfectly acceptable to leave the variable undefined.
+# required, and it is perfectly acceptable to leave the variable undefined.
 
 set timeout 15
 set server [lindex $argv 0]

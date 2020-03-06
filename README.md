@@ -44,6 +44,7 @@ A few years ago I was supporting a very diverse environment with Solaris, AIX, a
 #
 # Example:
 #
+#   $ export OLD_PASSWORD=""
 #   $ export NEW_PASSWORD="newpwd"
 #   $ ./sshchpwd login@hostname "" "" "sudo passwd username"
 #

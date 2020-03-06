@@ -46,9 +46,10 @@ A few years ago I was supporting a very diverse environment with Solaris, AIX, a
 #
 #   $ export OLD_PASSWORD=""
 #   $ export NEW_PASSWORD="newpwd"
-#   $ ./sshchpwd login@hostname "" "" "sudo passwd username"
+#   $ ./sshchpwd login@hostname "" "login_password" "sudo passwd username"
 #
 # In the case of changing another user's password, OLD_PASSWORD, though not
-# likely required, should be defined to avoid an error (a blank value is ok).
+# likely required, is defined to avoid an error (blank value is ok), and the
+# ssh login user's password is supplied as {token} and not as an OLD_PASSWORD.
 </code></pre>
 

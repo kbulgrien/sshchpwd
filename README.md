@@ -47,7 +47,7 @@ A few years ago I was supporting a very diverse environment with Solaris, AIX, a
 #   $ export NEW_PASSWORD="newpwd"
 #   $ ./sshchpwd login@hostname "" "" "sudo passwd username"
 #
-# In the case of changing another user's password, OLD_PASSWORD is likely not
-# required, and it is perfectly acceptable to leave the variable undefined.
+# In the case of changing another user's password, OLD_PASSWORD, though not
+# likely required, should be defined to avoid an error (a blank value is ok).
 </code></pre>
 

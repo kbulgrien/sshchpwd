@@ -10,22 +10,29 @@ A few years ago I was supporting a very diverse environment with Solaris, AIX, a
 #
 # Expect script to change login passwords using SSH, with support for one-time
 # tokens (like SecurID), expired passwords (changed before arriving at the
-# prompt), on Solaris, AIX, Linux, etc.
+# prompt), on Solaris, AIX, Linux, etc.  Password setting on the local system
+# is also supported.
 #
 # License: GPLv3
 # License URI: http://www.gnu.org/licenses/gpl.txt
 #
 # Copyright 2012-2016 Jean-Sebastien Morisset (http://surniaulula.com/)
-#   Modifications made to allow SCO Openserver 5.0.7 password changes:
+#   Modifications for SCO Openserver 5.0.7 passwords and local passwords:
 #     Copyright 2020 Kevin R. Bulgrien (https://systemsdesignusa.com/)
 #
 # Example:
 #
-#       $ export OLD_PASSWORD="oldpwd"
-#       $ export NEW_PASSWORD="newpwd"
-#       $ ./sshchpwd {server} {port} {token} {passwd_command}
+#   $ export OLD_PASSWORD="oldpwd"
+#   $ export NEW_PASSWORD="newpwd"
+#   $ ./sshchpwd {server} {port} {token} {passwd_command}
+#
+#   -or-
+#
+#   $ ./sshchpwd {server} {port} {token} {passwd_command} {oldpwd} {newpwd}
 #
 # The {server} parameter may incorporate a login username (i.e. user@server).
+# When {server} is set to a null string, the password change is done on the
+# local system, so {port} and {token} are ignored (and permit null values).
 #
 # The {port} and {token} command-line parameters are optional. If the server
 # uses SecurID (or another one-time password), enter it on the command-line
@@ -38,9 +45,12 @@ A few years ago I was supporting a very diverse environment with Solaris, AIX, a
 # command-line arguments, or, for example, to prefix the command with sudo.
 # In the case of sudo, however, as this script is not sudo-aware, sudo must
 # permit the login user to run passwd without first retyping their password.
-# (See the sudo "nopasswd" configuration option.)  If one or more optional
-# parameters are unneeded, empty quotes ("") serve as a placeholder for
+# (See the sudo "nopasswd" configuration option.)  If any prior optional
+# parameter is not needed, use empty quotes ("") as a placeholder for
 # unused optional parameters.
+#
+# If supplied, both {oldpwd} and {newpwd} are required, and, unless {newpwd}
+# is null, OLD_PASSWORD and NEW_PASSWORD environment variables are ignored.
 #
 # Example:
 #
